@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ChatAI Console</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 290px;
+    padding: 18px 20px 20px;
+    background: #0f1117;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #e2e8f0;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .logo { font-size: 1rem; font-weight: 700; color: #a78bfa; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #334155; margin-left: auto; flex-shrink: 0;
+    transition: background .3s;
+  }
+  .dot.online  { background: #4ade80; }
+  .dot.offline { background: #f87171; }
+  .status-line { font-size: .76rem; color: #64748b; margin-bottom: 14px; }
+  .status-line span { color: #94a3b8; }
+  hr { border: none; border-top: 1px solid #1e2235; margin-bottom: 12px; }
+  .section-title {
+    font-size: .68rem; text-transform: uppercase; letter-spacing: .5px;
+    color: #475569; margin-bottom: 8px;
+  }
+  .bridge-row {
+    display: flex; align-items: center; gap: 8px;
+    background: #131620; border: 1px solid #1e2235; border-radius: 7px;
+    padding: 8px 10px; margin-bottom: 8px;
+  }
+  .bridge-icon { font-size: 1rem; flex-shrink: 0; }
+  .bridge-name { font-size: .8rem; color: #94a3b8; flex: 1; }
+  .bridge-status { font-size: .7rem; color: #475569; }
+  .bridge-status.active { color: #a78bfa; }
+  .open-btn {
+    display: block; width: 100%; margin-top: 14px; padding: 8px;
+    background: #1e2235; border: 1px solid #2d3148; border-radius: 7px;
+    color: #a78bfa; font-size: .8rem; cursor: pointer; text-align: center;
+    transition: background .15s; font-family: inherit;
+  }
+  .open-btn:hover { background: #252a42; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">✦ ChatAI Console</div>
+  <div class="dot" id="dot"></div>
+</div>
+<div class="status-line">Console: <span id="status-txt">checking…</span></div>
+<hr>
+<div class="section-title">OAuth Bridges</div>
+<div class="bridge-row">
+  <div class="bridge-icon">🔵</div>
+  <div class="bridge-name">Claude.ai</div>
+  <div class="bridge-status" id="claude-status">intercepts callbacks</div>
+</div>
+<div class="bridge-row">
+  <div class="bridge-icon">🟣</div>
+  <div class="bridge-name">MiniApps.ai</div>
+  <div class="bridge-status" id="miniapps-status">polls for sessions</div>
+</div>
+<button class="open-btn" id="open-btn">Open ChatAI Console</button>
+<script src="popup.js"></script>
+</body>
+</html>
