@@ -1,6 +1,7 @@
 // content_claude.js — runs at document_start on claude.ai
 // Only intercepts Google OAuth callbacks that were initiated by ChatAI Console
 // (verified by checking the state token with the local server before acting).
+// Does nothing if the extension is disabled via the popup toggle.
 
 (function () {
   'use strict';
@@ -14,15 +15,20 @@
   if ((!code && !error) || !state) return;
 
   const CONSOLE = 'http://localhost:5000';
+  const api     = typeof browser !== 'undefined' ? browser : chrome;
 
-  // Ask Console whether this state belongs to it before doing anything.
-  // Short timeout so normal claude.ai logins are not slowed down.
-  fetch(`${CONSOLE}/api/oauth/claude/owns-state?state=${encodeURIComponent(state)}`, {
-    signal: AbortSignal.timeout(100),
-  })
-    .then(r => r.ok ? r.json() : null)
-    .then(d => { if (d?.owned) intercept(); })
-    .catch(() => { /* Console not running — leave the page alone */ });
+  // Check enabled flag before doing anything
+  api.storage.local.get('enabled').then(({ enabled }) => {
+    if (!enabled) return;
+
+    // Ask Console whether this state belongs to it before doing anything.
+    fetch(`${CONSOLE}/api/oauth/claude/owns-state?state=${encodeURIComponent(state)}`, {
+      signal: AbortSignal.timeout(150),
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.owned) intercept(); })
+      .catch(() => { /* Console not running — leave the page alone */ });
+  }).catch(() => { /* storage unavailable — do nothing */ });
 
   function intercept() {
     window.stop();

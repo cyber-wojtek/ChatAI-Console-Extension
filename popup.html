@@ -26,6 +26,31 @@
   }
   .dot.online  { background: #4ade80; }
   .dot.offline { background: #f87171; }
+
+  /* Toggle */
+  .toggle-row {
+    display: flex; align-items: center; gap: 10px;
+    background: #131620; border: 1px solid #1e2235;
+    border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;
+  }
+  .toggle-label { font-size: .82rem; color: #94a3b8; flex: 1; }
+  .toggle-label small { display: block; font-size: .7rem; color: #475569; margin-top: 2px; }
+  .switch { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute; inset: 0; background: #1e2235;
+    border: 1px solid #2d3148; border-radius: 20px; cursor: pointer;
+    transition: background .2s, border-color .2s;
+  }
+  .slider::before {
+    content: ''; position: absolute;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #475569; left: 2px; top: 2px;
+    transition: transform .2s, background .2s;
+  }
+  input:checked + .slider { background: #4c1d95; border-color: #7c3aed; }
+  input:checked + .slider::before { background: #a78bfa; transform: translateX(16px); }
+
   .status-line { font-size: .76rem; color: #64748b; margin-bottom: 14px; }
   .status-line span { color: #94a3b8; }
   hr { border: none; border-top: 1px solid #1e2235; margin-bottom: 12px; }
@@ -49,6 +74,9 @@
     transition: background .15s; font-family: inherit;
   }
   .open-btn:hover { background: #252a42; }
+  .disabled-overlay {
+    opacity: .4; pointer-events: none; transition: opacity .2s;
+  }
 </style>
 </head>
 <body>
@@ -56,20 +84,35 @@
   <div class="logo">✦ ChatAI Console</div>
   <div class="dot" id="dot"></div>
 </div>
-<div class="status-line">Console: <span id="status-txt">checking…</span></div>
-<hr>
-<div class="section-title">OAuth Bridges</div>
-<div class="bridge-row">
-  <div class="bridge-icon">🔵</div>
-  <div class="bridge-name">Claude.ai</div>
-  <div class="bridge-status" id="claude-status">intercepts callbacks</div>
+
+<div class="toggle-row">
+  <div class="toggle-label">
+    Bridge enabled
+    <small>Disabled by default — enable only when signing in</small>
+  </div>
+  <label class="switch">
+    <input type="checkbox" id="enabledToggle">
+    <span class="slider"></span>
+  </label>
 </div>
-<div class="bridge-row">
-  <div class="bridge-icon">🟣</div>
-  <div class="bridge-name">MiniApps.ai</div>
-  <div class="bridge-status" id="miniapps-status">polls for sessions</div>
+
+<div id="main-content">
+  <div class="status-line">Console: <span id="status-txt">checking…</span></div>
+  <hr>
+  <div class="section-title">OAuth Bridges</div>
+  <div class="bridge-row">
+    <div class="bridge-icon">🔵</div>
+    <div class="bridge-name">Claude.ai</div>
+    <div class="bridge-status" id="claude-status">intercepts callbacks</div>
+  </div>
+  <div class="bridge-row">
+    <div class="bridge-icon">🟣</div>
+    <div class="bridge-name">MiniApps.ai</div>
+    <div class="bridge-status" id="miniapps-status">polls for sessions</div>
+  </div>
+  <button class="open-btn" id="open-btn">Open ChatAI Console</button>
 </div>
-<button class="open-btn" id="open-btn">Open ChatAI Console</button>
+
 <script src="popup.js"></script>
 </body>
 </html>

@@ -1,15 +1,19 @@
 {
   "manifest_version": 3,
   "name": "ChatAI Console OAuth Bridge",
-  "version": "1.1",
-  "description": "Intercepts Google OAuth callbacks for Claude and MiniApps, relaying tokens to ChatAI Console.",
+  "version": "1.2",
+  "description": "Intercepts Google OAuth callbacks for Claude and MiniApps, relaying tokens to ChatAI Console on localhost. Disabled by default — enable only when signing in.",
 
-  "permissions": [],
+  "permissions": ["storage"],
   "host_permissions": [
     "https://claude.ai/*",
     "https://miniapps.ai/*",
     "http://localhost:5000/*"
   ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
 
   "content_scripts": [
     {

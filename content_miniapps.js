@@ -1,5 +1,6 @@
 // content_miniapps.js — runs at document_idle on miniapps.ai
-// Does nothing unless ChatAI Console has an active miniapps OAuth session waiting.
+// Does nothing unless ChatAI Console has an active miniapps OAuth session waiting,
+// AND the extension is enabled via the popup toggle (disabled by default).
 // Polls Console for a pending state, then uses GIS (already loaded by miniapps.ai)
 // to get a Google ID token credential, and relays it back to Console.
 
@@ -7,16 +8,19 @@
   'use strict';
 
   const CONSOLE        = 'http://localhost:5000';
-  const POLL_INTERVAL  = 1500;   // ms between checks for a pending session
-  const GIS_TIMEOUT    = 90_000; // ms to wait for user to complete Google sign-in
+  const POLL_INTERVAL  = 1500;
+  const GIS_TIMEOUT    = 90_000;
   const MINIAPPS_CID   = '1011544206507-a5rcko9t7su3cqd1lthf7useqa9aeoue.apps.googleusercontent.com';
+  const api            = typeof browser !== 'undefined' ? browser : chrome;
 
-  let polling        = false;
-  let gisActive      = false;
+  // Check enabled flag before starting the polling loop
+  api.storage.local.get('enabled').then(({ enabled }) => {
+    if (enabled) startPolling();
+  }).catch(() => { /* storage unavailable — do nothing */ });
+
+  let polling          = false;
+  let gisActive        = false;
   let consecutiveFails = 0;
-
-  // Start polling for a pending OAuth session once the page is settled
-  startPolling();
 
   function startPolling() {
     if (polling) return;

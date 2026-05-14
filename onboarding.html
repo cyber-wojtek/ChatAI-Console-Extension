@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ChatAI Console — Setup</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: #0f1117;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #e2e8f0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 16px 64px;
+  }
+  .card {
+    background: #1a1d27;
+    border: 1px solid #2d3148;
+    border-radius: 14px;
+    padding: 40px 48px;
+    max-width: 580px;
+    width: 100%;
+    box-shadow: 0 8px 40px rgba(0,0,0,.5);
+  }
+  .logo { font-size: 1.5rem; font-weight: 700; color: #a78bfa; margin-bottom: 4px; }
+  .tagline { font-size: .8rem; color: #64748b; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 28px; }
+
+  h2 { font-size: 1rem; font-weight: 600; color: #c4b5fd; margin: 24px 0 10px; }
+  h2:first-of-type { margin-top: 0; }
+
+  p { font-size: .88rem; line-height: 1.65; color: #94a3b8; margin-bottom: 10px; }
+  p:last-child { margin-bottom: 0; }
+
+  .data-box {
+    background: #131620;
+    border: 1px solid #1e2235;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 12px 0;
+  }
+  .data-row {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: .83rem; color: #94a3b8; margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .data-row:last-child { margin-bottom: 0; }
+  .data-row .label {
+    font-weight: 600; color: #c4b5fd; white-space: nowrap; min-width: 120px;
+  }
+
+  .not-collected {
+    font-size: .83rem; color: #4ade80; background: #052e16;
+    border: 1px solid #166534; border-radius: 6px;
+    padding: 8px 12px; margin: 12px 0;
+  }
+
+  hr { border: none; border-top: 1px solid #1e2235; margin: 24px 0; }
+
+  .consent-block {
+    background: #131620;
+    border: 1px solid #2d3148;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 24px;
+  }
+  .consent-block h2 { margin-top: 0; }
+
+  .choice-row {
+    display: flex; gap: 12px; margin-top: 16px;
+  }
+  .btn {
+    flex: 1; padding: 10px 16px; border-radius: 8px; font-size: .87rem;
+    font-family: inherit; cursor: pointer; font-weight: 600;
+    transition: background .15s, border-color .15s;
+    border: 1px solid transparent;
+  }
+  .btn-accept {
+    background: #4c1d95; border-color: #7c3aed; color: #e9d5ff;
+  }
+  .btn-accept:hover { background: #5b21b6; }
+  .btn-decline {
+    background: #1e2235; border-color: #2d3148; color: #64748b;
+  }
+  .btn-decline:hover { background: #252a42; color: #94a3b8; }
+
+  .note { font-size: .76rem; color: #475569; margin-top: 12px; line-height: 1.5; }
+
+  .done-msg {
+    display: none;
+    text-align: center;
+    padding: 20px 0 8px;
+  }
+  .done-msg .icon { font-size: 2rem; margin-bottom: 8px; }
+  .done-msg p { color: #4ade80; font-weight: 600; font-size: .92rem; }
+  .done-msg small { color: #475569; font-size: .78rem; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">✦ ChatAI Console</div>
+  <div class="tagline">OAuth Bridge · Setup</div>
+
+  <h2>What this extension does</h2>
+  <p>
+    This extension enables Google sign-in for <strong>Claude.ai</strong> and
+    <strong>MiniApps.ai</strong> accounts in ChatAI Console, which runs locally
+    on your machine at <code>http://localhost:5000</code>.
+  </p>
+  <p>
+    Google's sign-in system only issues tokens for registered domains. This
+    extension runs on those domains so the sign-in happens from the right
+    origin, then sends the resulting token or auth code to your local Console
+    server — never to any external server.
+  </p>
+
+  <hr>
+
+  <h2>Data transmitted</h2>
+  <p>When you initiate a Google sign-in from ChatAI Console:</p>
+
+  <div class="data-box">
+    <div class="data-row">
+      <span class="label">Claude sign-in</span>
+      <span>A one-time Google OAuth authorization code is sent to
+        <strong>http://localhost:5000</strong>. This code is used by your
+        local Console to authenticate with Claude.ai on your behalf.</span>
+    </div>
+    <div class="data-row">
+      <span class="label">MiniApps sign-in</span>
+      <span>A Google ID token (JWT) issued by Google's Identity Services
+        is sent to <strong>http://localhost:5000</strong>. This token is used
+        by your local Console to authenticate with MiniApps.ai on your behalf.</span>
+    </div>
+  </div>
+
+  <div class="not-collected">
+    ✓ No data is sent to any external server — only to localhost:5000 on your own machine.
+  </div>
+
+  <h2>What is NOT collected</h2>
+  <div class="data-box">
+    <div class="data-row"><span class="label">Browsing activity</span><span>Never collected or transmitted.</span></div>
+    <div class="data-row"><span class="label">Cookies</span><span>Not accessed or forwarded.</span></div>
+    <div class="data-row"><span class="label">Search terms</span><span>Not collected.</span></div>
+    <div class="data-row"><span class="label">Analytics / telemetry</span><span>None whatsoever.</span></div>
+    <div class="data-row"><span class="label">Persistent identifiers</span><span>None stored or transmitted.</span></div>
+  </div>
+
+  <h2>When does it activate?</h2>
+  <p>
+    The extension is <strong>disabled by default</strong> and does nothing
+    during normal browsing. You must explicitly enable it from the extension
+    popup before each sign-in, then disable it again when done.
+    The content scripts only act when your local Console server confirms it
+    initiated the current sign-in flow.
+  </p>
+
+  <hr>
+
+  <div class="consent-block">
+    <h2>Your choice</h2>
+    <p>
+      To use Google sign-in with ChatAI Console, the extension needs to
+      send your Google auth code or ID token to <strong>localhost:5000</strong>
+      (your local machine only) when you initiate a sign-in.
+    </p>
+    <p>
+      You can decline and still use ChatAI Console by entering session keys manually.
+      You can change this choice any time from the extension popup.
+    </p>
+
+    <div class="choice-row">
+      <button class="btn btn-decline" id="btn-decline">Decline — I'll enter keys manually</button>
+      <button class="btn btn-accept" id="btn-accept">Accept &amp; enable bridge</button>
+    </div>
+
+    <div class="note">
+      Declining does not uninstall the extension. The bridge remains inactive
+      until you enable it from the popup.
+    </div>
+
+    <div class="done-msg" id="done-msg">
+      <div class="icon" id="done-icon"></div>
+      <p id="done-text"></p>
+      <small>You can change this in the extension popup at any time.</small>
+    </div>
+  </div>
+</div>
+
+<script src="onboarding.js"></script>
+</body>
+</html>
