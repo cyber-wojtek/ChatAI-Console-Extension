@@ -1,12 +1,12 @@
 # ChatAI Console — OAuth Bridge Extension
 
-Browser extension (Manifest V3) that bridges Google OAuth for [ChatAI Console](../ChatAI-Console) — works with both **Claude.ai** and **MiniApps.ai** accounts.
+Browser extension (Manifest V3) that bridges Google OAuth for [ChatAI Console](../ChatAI-Console) — works with **Claude.ai**.
 
 **Disabled by default.** Enable the bridge from the extension popup only when you need to sign in, thus avoiding any background activity during normal browsing.
 
 ## Why this exists
 
-Google registers OAuth client IDs against specific origins. Claude's and MiniApps' client IDs are registered for their own domains, not `localhost`. This extension runs on those domains so the OAuth flow happens in the right origin, then relays the token/code to your local Console server.
+Google registers OAuth client IDs against specific origins. Claude's client ID is registered for their own domain, not `localhost`. This extension runs on that domain so the OAuth flow happens in the right origin, then relays the token/code to your local Console server.
 
 ## How it works
 
@@ -18,7 +18,7 @@ Google registers OAuth client IDs against specific origins. Claude's and MiniApp
 4. Relays the auth code to Console via `POST /api/oauth/claude/ext-callback`
 5. Console's status poll picks up the code and fills the account form
 
-**Neither script does anything during normal browsing** — Claude's script only acts when the URL has `?code=`/`?error=` AND the server confirms the state is its own; MiniApps' script only acts when the server has a pending session.
+**Neither script does anything during normal browsing** — Claude's script only acts when the URL has `?code=`/`?error=` AND the server confirms the state on its own.
 
 ## Installation
 
@@ -39,9 +39,9 @@ Google registers OAuth client IDs against specific origins. Claude's and MiniApp
 
 1. Click the extension icon in your browser toolbar
 2. Flip the **Bridge enabled** toggle on
-3. Go to ChatAI Console and click **Sign in with Google** for Claude or MiniApps
+3. Go to ChatAI Console and click **Sign in with Google** for Claude
 4. Complete the Google sign-in — the extension handles the rest
-5. Turn the toggle **off** when done
+5. Turn the toggle **off** when done if you wish
 
 When disabled, the extension does absolutely nothing on claude.ai.
 
@@ -49,6 +49,7 @@ When disabled, the extension does absolutely nothing on claude.ai.
 
 - **ChatAI Console** running at `http://localhost:5000` (`app.py`)
 - Popups allowed for `localhost:5000` (Console handles this)
+- Popups allowed for `claude.ai`
 
 ## Files
 
