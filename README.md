@@ -43,12 +43,11 @@ Google registers OAuth client IDs against specific origins. Claude's and MiniApp
 4. Complete the Google sign-in — the extension handles the rest
 5. Turn the toggle **off** when done
 
-When disabled, the extension does absolutely nothing on claude.ai or miniapps.ai.
+When disabled, the extension does absolutely nothing on claude.ai.
 
 ## Requirements
 
 - **ChatAI Console** running at `http://localhost:5000` (`app.py`)
-- A browser tab open on `miniapps.ai` when doing MiniApps sign-in (Console opens it automatically)
 - Popups allowed for `localhost:5000` (Console handles this)
 
 ## Files
@@ -57,7 +56,6 @@ When disabled, the extension does absolutely nothing on claude.ai or miniapps.ai
 |------|---------|
 | `manifest.json` | Extension manifest (MV3) |
 | `content_claude.js` | Content script for `claude.ai` — intercepts OAuth callbacks |
-| `content_miniapps.js` | Content script for `miniapps.ai` — triggers GIS and relays credential |
 | `popup.html` / `popup.js` | Extension popup — shows Console status and active sessions |
 | `icon*.png` | Extension icons |
 
@@ -66,7 +64,6 @@ When disabled, the extension does absolutely nothing on claude.ai or miniapps.ai
 | Permission | Why |
 |------------|-----|
 | `https://claude.ai/*` | Read URL params on OAuth callback page |
-| `https://miniapps.ai/*` | Poll Console and trigger GIS on the correct origin |
 | `http://localhost:5000/*` | Communicate with ChatAI Console |
 
 No background service worker, no persistent storage, no external requests beyond localhost and the two target domains.
