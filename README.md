@@ -1,6 +1,6 @@
 # ChatAI Console — OAuth Bridge Extension
 
-Browser extension (Manifest V3) that bridges Google OAuth for [ChatAI Console](../ChatAI-Console) — works with **Claude.ai**.
+Browser extension (Manifest V3) that bridges Google OAuth for [ChatAI Console](https://github.com/cyber-wojtek/ChatAI-Console) — works with **Claude.ai**.
 
 **Disabled by default.** Enable the bridge from the extension popup only when you need to sign in, thus avoiding any background activity during normal browsing.
 
