@@ -33,10 +33,10 @@ function applyEnabledState(enabled) {
 
 function checkStatus() {
   Promise.all([
-    fetch(`${CONSOLE}/api/accounts`,                   { signal: AbortSignal.timeout(2500) }).catch(() => null),
-    fetch(`${CONSOLE}/api/oauth/miniapps/ext-pending`, { signal: AbortSignal.timeout(2500) }).catch(() => null),
-  ]).then(async ([accR, pendR]) => {
-    if (accR?.ok) {
+    fetch(`${CONSOLE}/api/ping`,                        { signal: AbortSignal.timeout(2500) }).catch(() => null),
+    fetch(`${CONSOLE}/api/oauth/miniapps/ext-pending`,  { signal: AbortSignal.timeout(2500) }).catch(() => null),
+  ]).then(async ([pingR, pendR]) => {
+    if (pingR?.ok) {
       dot.className         = 'dot online';
       statusTxt.textContent = 'online';
     } else {
